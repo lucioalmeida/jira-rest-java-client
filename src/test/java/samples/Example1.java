@@ -52,10 +52,10 @@ public class Example1 {
 		}
 
 		// let's now print all issues matching a JQL string (here: all assigned issues)
-		final SearchResult searchResult = restClient.getSearchClient().searchJql("assignee is not EMPTY", pm);
+		/*final SearchResult searchResult = restClient.getSearchClient().searchJql("assignee is not EMPTY", pm);
 		for (BasicIssue issue : searchResult.getIssues()) {
 			System.out.println(issue.getKey());
-		}
+		}*/
 
 		final Issue issue = restClient.getIssueClient().getIssue("TST-1", pm);
 

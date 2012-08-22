@@ -16,22 +16,27 @@
 
 package com.atlassian.jira.rest.client.internal.json;
 
-import com.atlassian.jira.rest.client.domain.BasicIssue;
 import com.atlassian.jira.rest.client.domain.SearchResult;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import java.util.Collection;
 
-public class SearchResultJsonParser implements JsonParser<SearchResult> {
-	private final BasicIssueJsonParser basicIssueJsonParser = new BasicIssueJsonParser();
+public class SearchResultJsonParser<T> implements JsonParser<SearchResult> {
+    private JsonParser<Collection<T>> issueParser = null;
+
+    public SearchResultJsonParser(JsonParser<Collection<T>> issueParser) {
+        this.issueParser = issueParser;
+    }
 
 	@Override
-	public SearchResult parse(JSONObject json) throws JSONException {
+	public SearchResult<T> parse(JSONObject json) throws JSONException {
 		final int startAt = json.getInt("startAt");
 		final int maxResults = json.getInt("maxResults");
 		final int total = json.getInt("total");
-		final Collection<BasicIssue> issues = JsonParseUtil.parseJsonArray(json.getJSONArray("issues"), basicIssueJsonParser);
+
+        final Collection<T> issues = issueParser.parse(json);
+		//final Collection<T> issues = JsonParseUtil.parseJsonArray(json.getJSONArray("issues"), issueParser);
 		return new SearchResult(startAt, maxResults, total, issues);
 	}
 }

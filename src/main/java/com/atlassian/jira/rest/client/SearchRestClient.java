@@ -16,9 +16,12 @@
 
 package com.atlassian.jira.rest.client;
 
+import com.atlassian.jira.rest.client.domain.BasicIssue;
 import com.atlassian.jira.rest.client.domain.SearchResult;
+import com.atlassian.jira.rest.client.internal.json.JsonParser;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
 
 /**
  * The client handling search REST resource
@@ -34,7 +37,9 @@ public interface SearchRestClient {
 	 * @return issues matching given JQL query
 	 * @throws RestClientException in case of problems (connectivity, malformed messages, invalid JQL query, etc.)
 	 */
-	SearchResult searchJql(@Nullable String jql, ProgressMonitor progressMonitor);
+
+    SearchResult<BasicIssue> searchJql(@Nullable String jql, ProgressMonitor progressMonitor);
+	<T> SearchResult<T> searchJql(@Nullable String jql, String fields, ProgressMonitor progressMonitor, JsonParser<Collection<T>> issueParser);
 
 	/**
 	 * Performs a JQL search and returns issues matching the query using default maxResults (as configured in JIRA - usually 50) and startAt=0
@@ -49,5 +54,5 @@ public interface SearchRestClient {
 	 * @return issues matching given JQL query
 	 * @throws RestClientException in case of problems (connectivity, malformed messages, invalid JQL query, etc.)
 	 */
-	SearchResult searchJql(@Nullable String jql, int maxResults, int startAt, ProgressMonitor progressMonitor);
-}
+	SearchResult<BasicIssue> searchJql(@Nullable String jql, int maxResults, int startAt, ProgressMonitor progressMonitor);
+    <T> SearchResult<T> searchJql(@Nullable String jql, int maxResults, int startAt, String fields, ProgressMonitor progressMonitor, JsonParser<Collection<T>> issueParser);}

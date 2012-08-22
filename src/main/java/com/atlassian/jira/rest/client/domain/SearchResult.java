@@ -24,13 +24,13 @@ import com.google.common.base.Objects;
  *
  * @since v0.2
  */
-public class SearchResult {
+public class SearchResult<T> {
 	private final int startIndex;
 	private final int maxResults;
 	private final int total;
-	private final Iterable<BasicIssue> issues;
+	private final Iterable<T> issues;
 
-	public SearchResult(int startIndex, int maxResults, int total, Iterable<BasicIssue> issues) {
+	public SearchResult(int startIndex, int maxResults, int total, Iterable<T> issues) {
 		this.startIndex = startIndex;
 		this.maxResults = maxResults;
 		this.total = total;
@@ -61,7 +61,7 @@ public class SearchResult {
 		return total;
 	}
 
-	public Iterable<BasicIssue> getIssues() {
+	public Iterable<T> getIssues() {
 		return issues;
 	}
 

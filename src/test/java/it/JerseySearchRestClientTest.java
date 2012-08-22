@@ -19,6 +19,7 @@ package it;
 import com.atlassian.jira.nimblefunctests.annotation.Restore;
 import com.atlassian.jira.rest.client.IntegrationTestUtil;
 import com.atlassian.jira.rest.client.TestUtil;
+import com.atlassian.jira.rest.client.domain.BasicIssue;
 import com.atlassian.jira.rest.client.domain.SearchResult;
 import com.atlassian.jira.rest.client.internal.ServerVersionConstants;
 import com.atlassian.jira.rest.client.internal.json.TestConstants;
@@ -63,7 +64,7 @@ public class JerseySearchRestClientTest extends AbstractJerseyRestClientTest {
 
 		// seems pagination works differently between 4.4 and 5.0
 		// check the rationale https://jdog.atlassian.com/browse/JRADEV-8889
-		final SearchResult search2 = client.getSearchClient().searchJql("assignee is not EMPTY", 2, 1, pm);
+		final SearchResult<BasicIssue> search2 = client.getSearchClient().searchJql("assignee is not EMPTY", 2, 1, pm);
 		assertEquals(11, search2.getTotal());
 		assertEquals(2, Iterables.size(search2.getIssues()));
 		if (IntegrationTestUtil.TESTING_JIRA_5_OR_NEWER) {

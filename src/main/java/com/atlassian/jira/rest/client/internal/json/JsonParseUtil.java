@@ -275,4 +275,13 @@ public class JsonParseUtil {
 	public static Iterator<String> getStringKeys(JSONObject json) {
 		return json.keys();
 	}
+
+    public static <T> JsonParser<Collection<T>> getCollectionParser(final JsonParser<T> parser, final String tagString) {
+        return new JsonParser<Collection<T>>() {
+            @Override
+            public Collection<T> parse(JSONObject json) throws JSONException {
+                return JsonParseUtil.parseJsonArray(json.getJSONArray(tagString), parser);
+            }
+        };
+    }
 }
