@@ -116,11 +116,21 @@ public class IssueJsonParser implements JsonParser<Issue> {
 	private static final String FIELDS = "fields";
 	private static final String VALUE_ATTR = "value";
 
+    private JSONObject names = null;
+    private JSONObject types = null;
+
 	static Iterable<String> parseExpandos(JSONObject json) throws JSONException {
 		final String expando = json.getString("expand");
 		return Splitter.on(',').split(expando);
 	}
 
+    public IssueJsonParser() {
+    }
+
+    public IssueJsonParser(JSONObject names, JSONObject types) {
+        this.names = names;
+        this.types = types;
+    }
 
 	private <T> Collection<T> parseArray(JSONObject jsonObject, JsonWeakParser<T> jsonParser, String arrayAttribute)
 			throws JSONException {
@@ -215,7 +225,7 @@ public class IssueJsonParser implements JsonParser<Issue> {
 	@Override
 	public Issue parse(JSONObject s) throws JSONException {
 		final Iterable<String> expandos = parseExpandos(s);
-		final boolean isJira5x0OrNewer = Iterables.contains(expandos, SCHEMA_SECTION);
+        final boolean isJira5x0OrNewer = Iterables.contains(expandos, SCHEMA_SECTION) || this.types != null;
 		final boolean shouldUseNestedValueAttribute = !isJira5x0OrNewer;
 		final Collection<Comment> comments;
 		if (isJira5x0OrNewer) {
@@ -319,10 +329,10 @@ public class IssueJsonParser implements JsonParser<Issue> {
 	}
 
 	private Collection<Field> parseFieldsJira5x0(JSONObject issueJson) throws JSONException {
-		final JSONObject names = issueJson.optJSONObject(NAMES_SECTION);
-		final Map<String, String> namesMap = parseNames(names);
-		final JSONObject types = issueJson.optJSONObject(SCHEMA_SECTION);
-		final Map<String, String> typesMap = parseSchema(types);
+        final JSONObject names = (this.names == null ? issueJson.optJSONObject(NAMES_SECTION) : this.names);
+        final Map<String, String> namesMap = parseNames(names);
+        final JSONObject types = (this.types == null ? issueJson.optJSONObject(SCHEMA_SECTION) : this.types);
+        final Map<String, String> typesMap = parseSchema(types);
 
 		final JSONObject json = issueJson.getJSONObject(FIELDS);
 		final ArrayList<Field> res = new ArrayList<Field>(json.length());

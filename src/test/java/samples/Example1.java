@@ -27,6 +27,7 @@ import com.atlassian.jira.rest.client.domain.Transition;
 import com.atlassian.jira.rest.client.domain.input.FieldInput;
 import com.atlassian.jira.rest.client.domain.input.TransitionInput;
 import com.atlassian.jira.rest.client.internal.jersey.JerseyJiraRestClientFactory;
+import com.atlassian.jira.rest.client.internal.json.CommonIssueJsonParser;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -52,8 +53,8 @@ public class Example1 {
 		}
 
 		// let's now print all issues matching a JQL string (here: all assigned issues)
-		final SearchResult<BasicIssue> searchResult = restClient.getSearchClient().searchJql("assignee is not EMPTY", pm);
-		for (BasicIssue issue : searchResult.getIssues()) {
+		final SearchResult<Issue> searchResult = restClient.getSearchClient().searchJql("assignee is not EMPTY","\u002A"+"all", pm, new CommonIssueJsonParser());
+		for (Issue issue : searchResult.getIssues()) {
 			System.out.println(issue.getKey());
 		}
 
