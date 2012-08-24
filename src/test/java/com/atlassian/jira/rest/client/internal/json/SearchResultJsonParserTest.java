@@ -35,7 +35,7 @@ public class SearchResultJsonParserTest {
 	@Rule
 	public final ExpectedException exception = ExpectedException.none();
 
-	final SearchResultJsonParser parser = new SearchResultJsonParser();
+	final SearchResultJsonParser parser = new SearchResultJsonParser(JsonParseUtil.getCollectionParser(new BasicIssueJsonParser(), "issues"));
 
 	@Test
 	public void testParse() throws Exception {

@@ -41,8 +41,8 @@ import java.util.Collection;
 public class Example1 {
 	public static void main(String[] args) throws URISyntaxException {
 		final JerseyJiraRestClientFactory factory = new JerseyJiraRestClientFactory();
-		final URI jiraServerUri = new URI("http://localhost:8090/jira");
-		final JiraRestClient restClient = factory.createWithBasicHttpAuthentication(jiraServerUri, "admin", "admin");
+		final URI jiraServerUri = new URI("http://ta-dev.dyndns.biz:9980");
+		final JiraRestClient restClient = factory.createWithBasicHttpAuthentication(jiraServerUri, "admin", "zzz666");
 		final NullProgressMonitor pm = new NullProgressMonitor();
 
 		// first let's get and print all visible projects
@@ -52,10 +52,10 @@ public class Example1 {
 		}
 
 		// let's now print all issues matching a JQL string (here: all assigned issues)
-		/*final SearchResult searchResult = restClient.getSearchClient().searchJql("assignee is not EMPTY", pm);
+		final SearchResult<BasicIssue> searchResult = restClient.getSearchClient().searchJql("assignee is not EMPTY", pm);
 		for (BasicIssue issue : searchResult.getIssues()) {
 			System.out.println(issue.getKey());
-		}*/
+		}
 
 		final Issue issue = restClient.getIssueClient().getIssue("TST-1", pm);
 
