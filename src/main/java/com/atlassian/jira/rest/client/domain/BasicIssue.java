@@ -51,6 +51,14 @@ public class BasicIssue implements AddressableEntity {
 		return key;
 	}
 
+    public String getId() {
+        if (self != null) {
+            String path = self.getPath();
+            return path.substring(path.lastIndexOf('/') + 1);
+        }
+        return null;
+    }
+
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).
