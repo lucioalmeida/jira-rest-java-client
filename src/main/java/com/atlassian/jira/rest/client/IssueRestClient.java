@@ -220,6 +220,8 @@ public interface IssueRestClient {
 	 */
 	void linkIssue(LinkIssuesInput linkIssuesInput, ProgressMonitor progressMonitor);
 
+    void unlinkIssue(final Integer id, final ProgressMonitor progressMonitor);
+
 	/**
 	 * Uploads attachments to JIRA (adding it to selected issue)
 	 *

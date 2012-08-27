@@ -310,6 +310,19 @@ public class JerseyIssueRestClient extends AbstractJerseyRestClient implements I
 		}, progressMonitor);
 	}
 
+    @Override
+    public void unlinkIssue(final Integer id, final ProgressMonitor progressMonitor) {
+        invoke(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                final URI uri = UriBuilder.fromUri(baseUri).path("issueLink").path(Integer.toString(id)).build();
+
+                delete(uri, progressMonitor);
+                return null;
+            }
+        });
+    }
+
 	@Override
 	public void addAttachment(ProgressMonitor progressMonitor, final URI attachmentsUri, final InputStream in, final String filename) {
 		addAttachments(progressMonitor, attachmentsUri, new AttachmentInput(filename, in));
