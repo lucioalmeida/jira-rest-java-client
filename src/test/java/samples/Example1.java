@@ -25,6 +25,7 @@ import com.atlassian.jira.rest.client.domain.Issue;
 import com.atlassian.jira.rest.client.domain.SearchResult;
 import com.atlassian.jira.rest.client.domain.Transition;
 import com.atlassian.jira.rest.client.domain.input.FieldInput;
+import com.atlassian.jira.rest.client.domain.input.IssueInputBuilder;
 import com.atlassian.jira.rest.client.domain.input.TransitionInput;
 import com.atlassian.jira.rest.client.internal.jersey.JerseyJiraRestClientFactory;
 import com.atlassian.jira.rest.client.internal.json.CommonIssueJsonParser;
@@ -46,14 +47,25 @@ public class Example1 {
 		final JiraRestClient restClient = factory.createWithBasicHttpAuthentication(jiraServerUri, "admin", "zzz666");
 		final NullProgressMonitor pm = new NullProgressMonitor();
 
-		// first let's get and print all visible projects
+        final Issue issue = restClient.getIssueClient().getIssue("TEST-208", pm);
+
+        IssueInputBuilder issueInputBuilder = new IssueInputBuilder(issue.getProject().getKey(), 1L);
+        issueInputBuilder.setSummary("short summary");
+
+        try {
+            restClient.getIssueClient().updateIssue(issue.getKey(), issueInputBuilder.build(), null);
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        // first let's get and print all visible projects
 		final Iterable<BasicProject> allProjects = restClient.getProjectClient().getAllProjects(pm);
 		for (BasicProject project : allProjects) {
 			System.out.println(project);
 		}
 
 		// let's now print all issues matching a JQL string (here: all assigned issues)
-		final SearchResult<Issue> searchResult = restClient.getSearchClient().searchJql("assignee is not EMPTY","\u002A"+"all", pm, new CommonIssueJsonParser());
+/*		final SearchResult<Issue> searchResult = restClient.getSearchClient().searchJql("assignee is not EMPTY","\u002A"+"all", pm, new CommonIssueJsonParser());
 		for (Issue issue : searchResult.getIssues()) {
 			System.out.println(issue);
 		}
@@ -77,7 +89,7 @@ public class Example1 {
 		final Transition resolveIssueTransition = getTransitionByName(transitions, "Resolve Issue");
 		Collection<FieldInput> fieldInputs = Arrays.asList(new FieldInput("resolution", "Incomplete"));
 		final TransitionInput transitionInput = new TransitionInput(resolveIssueTransition.getId(), fieldInputs, Comment.valueOf("My comment"));
-		restClient.getIssueClient().transition(issue.getTransitionsUri(), transitionInput, pm);
+		restClient.getIssueClient().transition(issue.getTransitionsUri(), transitionInput, pm);*/
 
 	}
 
