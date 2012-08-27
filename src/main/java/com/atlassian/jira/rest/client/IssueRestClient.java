@@ -67,6 +67,7 @@ public interface IssueRestClient {
     void updateIssue(String issueKey, IssueInput issue, ProgressMonitor progressMonitor);
 
     void deleteIssue(Issue issue, boolean deleteSubtasks);
+    void deleteIssue(String issueKey, boolean deleteSubtasks);
 
 	/**
 	 * Retrieves issue with selected issue key.

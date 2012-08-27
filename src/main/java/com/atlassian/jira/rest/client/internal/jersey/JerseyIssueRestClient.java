@@ -443,6 +443,25 @@ public class JerseyIssueRestClient extends AbstractJerseyRestClient implements I
         });
     }
 
+    @Override
+    public void deleteIssue(final String issueKey, final boolean deleteSubtasks) {
+        invoke(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                final UriBuilder uriBuilder = UriBuilder.fromUri(baseUri).path("issue/" + issueKey);
+
+                if (deleteSubtasks) {
+                    uriBuilder.queryParam("deleteSubtasks", "");
+                }
+                URI uri = uriBuilder.build();
+                final WebResource issueResource = client.resource(uri);
+
+                issueResource.delete();
+                return null;
+            }
+        });
+    }
+
 	@Override
 	public Iterable<CimProject> getCreateIssueMetadata(@Nullable GetCreateIssueMetadataOptions options, ProgressMonitor progressMonitor) {
 
