@@ -64,7 +64,7 @@ public interface IssueRestClient {
 	Iterable<CimProject> getCreateIssueMetadata(@Nullable GetCreateIssueMetadataOptions options, ProgressMonitor progressMonitor);
 
 
-    void updateIssue(String issueKey, IssueInput issue, ProgressMonitor progressMonitor) throws Exception;
+    void updateIssue(String issueKey, IssueInput issue, ProgressMonitor progressMonitor);
 
 	/**
 	 * Retrieves issue with selected issue key.

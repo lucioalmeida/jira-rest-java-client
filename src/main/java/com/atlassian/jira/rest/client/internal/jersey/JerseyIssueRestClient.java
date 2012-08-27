@@ -412,12 +412,16 @@ public class JerseyIssueRestClient extends AbstractJerseyRestClient implements I
 	}
 
     @Override
-    public void updateIssue(String issueKey, IssueInput issue, ProgressMonitor progressMonitor) throws Exception {
+    public void updateIssue(String issueKey, IssueInput issue, ProgressMonitor progressMonitor) {
         final UriBuilder uriBuilder = UriBuilder.fromUri(baseUri);
         uriBuilder.path("issue").path(issueKey);
         final WebResource issueResource = client.resource(uriBuilder.build());
 
-        issueResource.put(InputGeneratorCallable.create(new IssueInputJsonGenerator(), issue).call());
+        try {
+            issueResource.put(InputGeneratorCallable.create(new IssueInputJsonGenerator(), issue).call());
+        } catch (Exception e) {
+            throw new RestClientException(e);
+        }
     }
 
 	@Override
