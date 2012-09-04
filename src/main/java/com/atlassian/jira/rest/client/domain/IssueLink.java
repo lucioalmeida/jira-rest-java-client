@@ -73,4 +73,12 @@ public class IssueLink {
 		return Objects.hashCode(targetIssueKey, targetIssueUri, issueLinkType);
 	}
 
+  public boolean isInbound() {
+    return issueLinkType.getDirection().equals(IssueLinkType.Direction.INBOUND);
+  }
+
+  public boolean isOutbound() {
+    return issueLinkType.getDirection().equals(IssueLinkType.Direction.OUTBOUND);
+  }
+
 }
