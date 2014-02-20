@@ -150,7 +150,7 @@ public class JsonParseUtil {
 			return null;
 		}
 		final String username = json.getString("name");
-		if (!json.has(JsonParseUtil.SELF_ATTR) && "Anonymous".equals(username)) {
+		if (!json.has(JsonParseUtil.SELF_ATTR)) {
 			return null; // insane representation for unassigned user - JRADEV-4262
 		}
 		return new BasicUser(getSelfUri(json), username, json.optString("displayName", null));
